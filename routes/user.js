@@ -30,4 +30,10 @@ userRouter.post("/register", async (req, res) => {
   });
 });
 
+userRouter.get("/", async (req, res) => {
+  const users = await User.find().select("-_id -password");
+
+  res.send(users);
+});
+
 module.exports = userRouter;
