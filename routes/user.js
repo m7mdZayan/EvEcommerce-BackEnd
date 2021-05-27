@@ -4,6 +4,14 @@ const { User, validateUser } = require("../models/User");
 const userRouter = express.Router();
 const bcrypt = require("bcrypt");
 
+// Get all users
+userRouter.get("/", async (req, res) => {
+  const users = await User.find().select("-_id -password");
+
+  res.send(users);
+});
+
+// User Registeration
 userRouter.post("/register", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send({ message: error.details[0].message });
@@ -30,10 +38,14 @@ userRouter.post("/register", async (req, res) => {
   });
 });
 
-userRouter.get("/", async (req, res) => {
-  const users = await User.find().select("-_id -password");
+// Lock & unlock user account
 
-  res.send(users);
+userRouter.put("/", async (req, res) => {
+  let user = await User.findOne({ email: req.body.email });
+  user.disabled = !user.disabled;
+
+  user = await user.save();
+  res.send(user);
 });
 
 module.exports = userRouter;
