@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userRouter = require("./routes/user");
 const loginRouter = require("./routes/login");
+const productsRouter = require("./routes/products");
 
 const app = express();
 const port = process.env.port || 3000;
@@ -20,6 +21,7 @@ app.use(cors());
 
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/products", productsRouter);
 
 app.get("/", (req, res) => {
   res.send("hello");
