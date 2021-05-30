@@ -4,6 +4,7 @@ const cors = require("cors");
 const userRouter = require("./routes/user");
 const loginRouter = require("./routes/login");
 const productsRouter = require("./routes/products");
+const orderRouter = require("./routes/orders");
 
 const app = express();
 const port = process.env.port || 3000;
@@ -22,6 +23,7 @@ app.use(cors());
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/orders", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("hello");
