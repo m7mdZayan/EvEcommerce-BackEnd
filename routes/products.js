@@ -1,10 +1,13 @@
 const express = require("express");
+const { SubCategory } = require("../models/Category");
 const { Product, validateProduct } = require("../models/Product");
 const productsRouter = express.Router();
 
 // Get all products
 productsRouter.get("/", async (req, res) => {
-  const products = await Product.find();
+  const products = await Product.find()
+    .populate("sub_category", "name")
+    .populate("category", "name");
 
   res.send(products);
 });
@@ -20,6 +23,8 @@ productsRouter.post("/", async (req, res) => {
     description: req.body.description,
     price: req.body.price,
     amount: req.body.amount,
+    sub_category: req.body.sub_category,
+    category: req.body.category,
   });
 
   product = await product.save();

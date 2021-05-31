@@ -13,6 +13,14 @@ const productSchema = new mongoose.Schema({
     required: [true, "Please describe the product "],
   },
   amount: Number,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
+  sub_category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SubCategory",
+  },
 });
 
 function validateProduct(product) {
@@ -22,6 +30,8 @@ function validateProduct(product) {
     price: Joi.number().required(),
     description: Joi.string().min(1).required(),
     amount: Joi.number().required(),
+    category: Joi.string(),
+    sub_category: Joi.string(),
   });
   return schema.validate(product);
 }
