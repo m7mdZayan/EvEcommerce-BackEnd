@@ -7,7 +7,7 @@ const { User } = require("../models/User");
 
 loginRouter.post("/", async (req, res) => {
   const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) return res.status(400).send({ message: error.details[0].message });
 
   let user = await User.findOne({ email: req.body.email });
   if (!user)
@@ -21,12 +21,14 @@ loginRouter.post("/", async (req, res) => {
   const token = jwt.sign(
     {
       _id: user._id,
+      role: user.role,
     },
     "JWTPRIVATEKEY"
   );
 
   res.send({
     userToken: token,
+    userName: user.name,
   });
 });
 
