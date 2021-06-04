@@ -12,6 +12,17 @@ productsRouter.get("/", async (req, res) => {
   res.send(products);
 });
 
+// Get products of specific Category
+productsRouter.get("/category", async (req, res) => {
+  const products = await Product.find({
+    category: req.body.categoryId,
+  })
+    .populate("sub_category", "name")
+    .populate("category", "name");
+
+  res.send(products);
+});
+
 // Add New Product
 
 productsRouter.post("/", async (req, res) => {
