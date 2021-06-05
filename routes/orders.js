@@ -1,7 +1,7 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const Order = require("../models/Order");
 const jwt = require("jsonwebtoken");
+const auth = require("../middlewares/auth");
 
 const orderRouter = express.Router();
 
@@ -16,15 +16,12 @@ orderRouter.get("/", async (req, res) => {
 
 // add new order
 
-orderRouter.post("/", async (req, res) => {
-  const token = req.header("x-auth-token");
-  const decoded = jwt.verify(token, "JWTPRIVATEKEY");
-
+orderRouter.post("/", auth, async (req, res) => {
   order = new Order({
     totalPrice: req.body.totalPrice,
     state: "pending",
     products: req.body.products,
-    owner: decoded._id,
+    owner: req.user._id,
   });
 
   order = await order.save();

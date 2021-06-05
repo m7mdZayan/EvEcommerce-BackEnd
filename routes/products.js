@@ -13,7 +13,7 @@ productsRouter.get("/", async (req, res) => {
 });
 
 // Get products of specific Category
-productsRouter.get("/category", async (req, res) => {
+productsRouter.post("/category", async (req, res) => {
   const products = await Product.find({
     category: req.body.categoryId,
   })
