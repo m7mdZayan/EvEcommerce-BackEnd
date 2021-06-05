@@ -1,6 +1,5 @@
 const express = require("express");
 const Order = require("../models/Order");
-const jwt = require("jsonwebtoken");
 const auth = require("../middlewares/auth");
 
 const orderRouter = express.Router();
@@ -14,6 +13,14 @@ orderRouter.get("/", async (req, res) => {
   res.send(orders);
 });
 
+// Get user orders
+
+orderRouter.get("/my-orders", auth, async (req, res) => {
+  const orders = await Order.find({ owner: req.user._id })
+    .populate("products")
+    .populate("owner", "-password");
+  res.send(orders);
+});
 // add new order
 
 orderRouter.post("/", auth, async (req, res) => {
